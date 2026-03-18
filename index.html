@@ -18,11 +18,45 @@
       showPage('home');
       setTimeout(() => { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 50);
     }
-    function submitQuote() {
+    async function submitQuote() {
       const vals = ['fn','fp','fe','fa','fq'].map(id => document.getElementById(id).value.trim());
       if (vals.some(v => !v)) { alert('Please fill in all required fields (marked *).'); return; }
-      document.getElementById('qform').style.display = 'none';
-      document.getElementById('qsuccess').classList.add('vis');
+
+      const data = {
+        name:    document.getElementById('fn').value,
+        phone:   document.getElementById('fp').value,
+        email:   document.getElementById('fe').value,
+        farm:    document.getElementById('fa').value,
+        region:  document.getElementById('fr').value,
+        species: document.getElementById('fs').value,
+        animals: document.getElementById('fq').value,
+        notes:   document.getElementById('fx').value,
+        tests: [...document.querySelectorAll('.cb-item input:checked')].map(cb => cb.parentElement.textContent.trim()).join(', ')
+      };
+
+      const btn = document.querySelector('.btn-submit');
+      btn.textContent = 'Sending…';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('https://formspree.io/f/xzdjknyk', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        if (res.ok) {
+          document.getElementById('qform').style.display = 'none';
+          document.getElementById('qsuccess').classList.add('vis');
+        } else {
+          btn.textContent = 'Send Quote Request';
+          btn.disabled = false;
+          alert('Something went wrong — please try again or call us directly.');
+        }
+      } catch {
+        btn.textContent = 'Send Quote Request';
+        btn.disabled = false;
+        alert('Something went wrong — please try again or call us directly.');
+      }
     }
   </script>
   <style>
