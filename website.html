@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Livestock Solutions NZ — On-Farm Field Technician Services</title>
+  <meta name="description" content="Professional on-farm Johne's and BVD blood sampling across Canterbury, West Coast, Southland and Marlborough. Partnered with the lab." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script>
+    function showPage(p) {
+      document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+      document.getElementById('page-' + p).classList.add('active');
+      window.scrollTo(0, 0);
+    }
+    function goSection(id) {
+      showPage('home');
+      setTimeout(() => { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 50);
+    }
+    async function submitQuote() {
+      const vals = ['fn','fp','fe','fa','fq'].map(id => document.getElementById(id).value.trim());
+      if (vals.some(v => !v)) { alert('Please fill in all required fields (marked *).'); return; }
+
+      const data = {
+        name:    document.getElementById('fn').value,
+        phone:   document.getElementById('fp').value,
+        email:   document.getElementById('fe').value,
+        farm:    document.getElementById('fa').value,
+        region:  document.getElementById('fr').value,
+        species: document.getElementById('fs').value,
+        animals: document.getElementById('fq').value,
+        notes:   document.getElementById('fx').value,
+        tests: [...document.querySelectorAll('.cb-item input:checked')].map(cb => cb.parentElement.textContent.trim()).join(', ')
+      };
+
+      const btn = document.querySelector('.btn-submit');
+      btn.textContent = 'Sending…';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('https://formspree.io/f/xzdjknyk', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        if (res.ok) {
+          document.getElementById('qform').style.display = 'none';
+          document.getElementById('qsuccess').classList.add('vis');
+        } else {
+          btn.textContent = 'Send Quote Request';
+          btn.disabled = false;
+          alert('Something went wrong — please try again or call us directly.');
+        }
+      } catch {
+        btn.textContent = 'Send Quote Request';
+        btn.disabled = false;
+        alert('Something went wrong — please try again or call us directly.');
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blood:     #9b1c1c;
+      --blood-dk:  #7a1515;
+      --black:     #0d0d0d;
+      --off-black: #1a1a1a;
+      --grey-dk:   #2a2a2a;
+      --grey-md:   #555;
+      --grey-lt:   #999;
+      --rule:      #e8e8e8;
+      --white:     #ffffff;
+      --near-white:#f9f9f9;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Geist', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+      height: 60px; background: var(--white);
+      border-bottom: 1px solid var(--rule);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 4rem;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 0.9rem; cursor: pointer; }
+    .nav-rule { width: 3px; height: 26px; background: var(--blood); flex-shrink: 0; }
+    .nav-wordmark strong { display: block; font-size: 0.875rem; font-weight: 700; color: var(--black); letter-spacing: -0.01em; line-height: 1.2; }
+    .nav-wordmark span { font-size: 0.67rem; color: var(--grey-lt); letter-spacing: 0.06em; text-transform: uppercase; font-weight: 400; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+    .nav-links a { font-size: 0.78rem; font-weight: 500; color: var(--grey-md); text-decoration: none; letter-spacing: 0.05em; text-transform: uppercase; transition: color 0.2s; cursor: pointer; }
+    .nav-links a:hover { color: var(--black); }
+    .nav-cta { background: var(--blood) !important; color: var(--white) !important; padding: 0.48rem 1.2rem; letter-spacing: 0.06em !important; transition: background 0.2s !important; }
+    .nav-cta:hover { background: var(--blood-dk) !important; }
+
+    /* ── PAGES ── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── HERO ── */
+    .hero { padding-top: 60px; min-height: 100vh; display: grid; grid-template-rows: 1fr auto; background: var(--black); }
+    .hero-main { display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 60px - 72px); }
+    .hero-content { padding: 7rem 5rem 5rem 6rem; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid #1f1f1f; }
+    .hero-kicker { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 3rem; }
+    .hero-kicker-line { width: 28px; height: 1px; background: var(--blood); }
+    .hero-kicker span { font-size: 0.67rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #555; }
+    .hero-heading {
+      font-size: clamp(3.2rem, 5.8vw, 6rem);
+      font-weight: 800;
+      line-height: 1.0;
+      color: var(--white);
+      letter-spacing: -0.04em;
+      margin-bottom: 2.5rem;
+    }
+    .hero-heading .accent { color: var(--blood); }
+    .hero-sub { font-size: 0.95rem; font-weight: 300; color: #777; line-height: 1.85; max-width: 380px; margin-bottom: 3.5rem; letter-spacing: 0.01em; }
+    .hero-cta-row { display: flex; align-items: center; gap: 2rem; }
+    .btn-hero, .hero-link { font-family: 'Geist', sans-serif; background: none; border: none; padding: 0; }
+    .btn-hero {
+      background: var(--blood); color: var(--white);
+      padding: 0.95rem 2rem; font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; transition: background 0.2s, transform 0.15s;
+      display: inline-block; border: none;
+    }
+    .btn-hero:hover { background: var(--blood-dk); transform: translateY(-1px); }
+    .hero-link { font-size: 0.75rem; font-weight: 500; color: #555; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: color 0.2s; border-bottom: 1px solid #2a2a2a !important; padding-bottom: 1px; display: inline-block; }
+    .hero-link:hover { color: var(--white); border-color: #555; }
+
+    .hero-right { padding: 7rem 5rem 5rem; display: flex; flex-direction: column; justify-content: space-between; }
+    .region-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--blood); margin-bottom: 1.2rem; }
+    .region-list { list-style: none; }
+    .region-list li { font-size: 1rem; font-weight: 500; color: var(--white); padding: 0.75rem 0; border-bottom: 1px solid #1f1f1f; letter-spacing: -0.01em; }
+    .region-list li:first-child { border-top: 1px solid #1f1f1f; }
+    .region-list li.muted { color: #3a3a3a; font-weight: 400; font-size: 0.85rem; font-style: italic; }
+
+    .hero-services-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--blood); margin-bottom: 1rem; }
+    .hsvc { display: flex; justify-content: space-between; align-items: baseline; padding: 0.8rem 0; border-bottom: 1px solid #1f1f1f; }
+    .hsvc:first-child { border-top: 1px solid #1f1f1f; }
+    .hsvc-name { font-size: 0.9rem; font-weight: 500; color: var(--white); }
+    .hsvc-price { font-size: 0.78rem; font-weight: 400; color: #444; }
+
+    .hero-bar { background: var(--blood); height: 72px; padding: 0 6rem; display: flex; align-items: center; justify-content: space-between; }
+    .hero-bar-item + .hero-bar-item { border-left: 1px solid rgba(255,255,255,0.18); padding-left: 2.5rem; }
+    .hbi-label { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 0.2rem; }
+    .hbi-val { font-size: 0.88rem; font-weight: 600; color: var(--white); letter-spacing: -0.01em; }
+
+    /* ── SHARED ── */
+    .section-white { background: var(--white); padding: 7rem 0; }
+    .section-near  { background: var(--near-white); padding: 7rem 0; }
+    .section-black { background: var(--black); padding: 7rem 0; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 4rem; }
+    .sec-label { font-size: 0.63rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--blood); margin-bottom: 1rem; }
+    .sec-title { font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; color: var(--black); margin-bottom: 1.2rem; }
+    .sec-title-white { color: var(--white); }
+    .sec-body { font-size: 0.95rem; font-weight: 300; color: var(--grey-md); line-height: 1.85; max-width: 520px; }
+
+    /* ── ABOUT ── */
+    .about-layout { display: grid; grid-template-columns: 1fr 1px 1fr; gap: 0; }
+    .about-divider { background: var(--rule); }
+    .about-left { padding-right: 5rem; }
+    .about-right { padding-left: 5rem; }
+    .about-points { margin-top: 2.5rem; }
+    .about-point { display: flex; gap: 1.5rem; padding: 1.4rem 0; border-bottom: 1px solid var(--rule); }
+    .about-point:first-child { border-top: 1px solid var(--rule); }
+    .ap-num { font-size: 0.72rem; font-weight: 700; color: #ccc; letter-spacing: 0.06em; flex-shrink: 0; width: 24px; padding-top: 2px; }
+    .ap-text h4 { font-size: 0.88rem; font-weight: 600; color: var(--black); margin-bottom: 0.3rem; letter-spacing: -0.01em; }
+    .ap-text p { font-size: 0.83rem; font-weight: 300; color: var(--grey-md); line-height: 1.75; }
+
+    .about-why h3 { font-size: 1.5rem; font-weight: 700; color: var(--black); margin-bottom: 1rem; line-height: 1.2; letter-spacing: -0.02em; }
+    .about-why > p { font-size: 0.88rem; font-weight: 300; color: var(--grey-md); line-height: 1.85; margin-bottom: 1.5rem; }
+    .why-list { list-style: none; }
+    .why-list li { font-size: 0.87rem; font-weight: 400; color: var(--grey-dk); padding: 0.9rem 0; border-bottom: 1px solid var(--rule); display: flex; gap: 0.8rem; line-height: 1.6; }
+    .why-list li:first-child { border-top: 1px solid var(--rule); }
+    .why-list li::before { content: '—'; color: var(--blood); font-weight: 700; flex-shrink: 0; }
+
+    /* ── PRICING ── */
+    .pricing-notice { border-left: 2px solid var(--blood); padding: 0.9rem 1.3rem; background: var(--near-white); font-size: 0.83rem; font-weight: 300; color: var(--grey-md); line-height: 1.75; margin-bottom: 3rem; }
+    .pricing-notice a { color: var(--blood); font-weight: 600; text-decoration: none; cursor: pointer; }
+    .pricing-notice a:hover { text-decoration: underline; }
+
+    table.pt { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-bottom: 3rem; }
+    table.pt thead tr { border-bottom: 1px solid var(--black); }
+    table.pt th { text-align: left; padding: 0 1rem 0.9rem 0; font-size: 0.67rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--grey-md); }
+    table.pt th:not(:first-child) { text-align: right; }
+    table.pt td { padding: 1rem 1rem 1rem 0; border-bottom: 1px solid var(--rule); color: var(--grey-dk); }
+    table.pt td:not(:first-child) { text-align: right; font-weight: 500; color: var(--black); font-variant-numeric: tabular-nums; }
+    table.pt tr.hl td { font-weight: 600; }
+    table.pt tr.hl td:first-child { padding-left: 0.7rem; border-left: 2px solid var(--blood); }
+
+    .includes-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; border: 1px solid var(--rule); margin-bottom: 3rem; }
+    .inc { padding: 1.5rem; border-right: 1px solid var(--rule); }
+    .inc:nth-child(3n) { border-right: none; }
+    .inc:nth-child(n+4) { border-top: 1px solid var(--rule); }
+    .inc-head { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blood); margin-bottom: 0.35rem; }
+    .inc-body { font-size: 0.8rem; font-weight: 300; color: var(--grey-md); line-height: 1.65; }
+
+    .rates-row { display: grid; grid-template-columns: repeat(3,1fr); background: var(--black); }
+    .rate { padding: 2rem 2rem; border-right: 1px solid #1f1f1f; }
+    .rate:last-child { border-right: none; }
+    .rate-label { font-size: 0.63rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #444; margin-bottom: 0.5rem; }
+    .rate-val { font-size: 1.9rem; font-weight: 700; color: var(--white); letter-spacing: -0.03em; line-height: 1; }
+    .rate-unit { font-size: 0.75rem; font-weight: 300; color: #444; margin-top: 0.3rem; }
+
+    /* ── PROCESS ── */
+    .process-grid { display: grid; grid-template-columns: repeat(4,1fr); border: 1px solid var(--rule); margin-top: 3rem; }
+    .proc { padding: 2.5rem 2rem; border-right: 1px solid var(--rule); }
+    .proc:last-child { border-right: none; }
+    .proc-n { font-size: 2rem; font-weight: 800; color: var(--rule); letter-spacing: -0.04em; line-height: 1; margin-bottom: 1.2rem; }
+    .proc h4 { font-size: 0.85rem; font-weight: 600; color: var(--black); margin-bottom: 0.5rem; letter-spacing: -0.01em; }
+    .proc p { font-size: 0.8rem; font-weight: 300; color: var(--grey-md); line-height: 1.75; }
+
+    /* ── TERMS ── */
+    .terms-grid { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--rule); margin-top: 2.5rem; }
+    .tc { padding: 1.8rem; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .tc:nth-child(even) { border-right: none; }
+    .tc:nth-last-child(-n+2) { border-bottom: none; }
+    .tc h3 { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blood); margin-bottom: 0.55rem; }
+    .tc p { font-size: 0.83rem; font-weight: 300; color: var(--grey-md); line-height: 1.8; }
+
+    /* ── QUOTE ── */
+    #page-quote { padding-top: 60px; background: var(--white); min-height: 100vh; }
+    .quote-header { background: var(--black); padding: 5rem 0 4rem; border-bottom: 2px solid var(--blood); }
+    .quote-header .sec-label { color: #444; }
+    .quote-header h1 { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 800; color: var(--white); line-height: 1.05; letter-spacing: -0.04em; margin-bottom: 0.8rem; }
+    .quote-header p { font-size: 0.9rem; font-weight: 300; color: #666; line-height: 1.85; max-width: 460px; }
+
+    .quote-layout { display: grid; grid-template-columns: 1fr 320px; gap: 0; padding: 5rem 0; }
+    .quote-form-col { padding-right: 5rem; border-right: 1px solid var(--rule); }
+    .quote-form-col h2 { font-size: 1.5rem; font-weight: 700; color: var(--black); letter-spacing: -0.03em; margin-bottom: 0.4rem; }
+    .qsub { font-size: 0.83rem; font-weight: 300; color: var(--grey-md); margin-bottom: 2.5rem; line-height: 1.7; }
+
+    .fsec { font-size: 0.63rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--blood); padding-bottom: 0.7rem; border-bottom: 1px solid var(--rule); margin: 2rem 0 1.3rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.9rem; }
+    .form-group label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--black); }
+    .form-group input, .form-group select, .form-group textarea {
+      border: 1px solid var(--rule); border-radius: 0;
+      padding: 0.75rem 0.9rem; font-family: 'Geist', sans-serif;
+      font-size: 0.88rem; font-weight: 400; color: var(--black);
+      background: var(--white); outline: none; transition: border-color 0.2s; -webkit-appearance: none;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--black); }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .cb-group { display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 0.9rem; }
+    .cb-item { display: flex; align-items: center; gap: 0.65rem; cursor: pointer; font-size: 0.85rem; font-weight: 400; color: var(--grey-dk); }
+    .cb-item input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--blood); cursor: pointer; }
+    .btn-submit { background: var(--blood); color: var(--white); border: none; width: 100%; padding: 1.05rem; font-family: 'Geist', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; margin-top: 0.5rem; }
+    .btn-submit:hover { background: var(--blood-dk); }
+    .form-success { display: none; padding: 3rem 0; }
+    .form-success.vis { display: block; }
+    .form-success h3 { font-size: 1.6rem; font-weight: 700; color: var(--black); letter-spacing: -0.03em; margin-bottom: 0.7rem; }
+    .form-success p { font-size: 0.88rem; font-weight: 300; color: var(--grey-md); line-height: 1.85; }
+
+    .quote-sidebar { padding-left: 3rem; display: flex; flex-direction: column; gap: 2.5rem; }
+    .sb-section h3 { font-size: 0.63rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--blood); padding-bottom: 0.7rem; border-bottom: 1px solid var(--rule); margin-bottom: 1.2rem; }
+    .contact-person { padding: 0.85rem 0; border-bottom: 1px solid var(--rule); }
+    .contact-person:first-child { padding-top: 0; }
+    .contact-person:last-child { border-bottom: none; }
+    .cp-name { font-size: 0.85rem; font-weight: 600; color: var(--black); margin-bottom: 0.15rem; letter-spacing: -0.01em; }
+    .cp-phone a { font-size: 0.83rem; color: var(--blood); text-decoration: none; font-weight: 500; }
+    .cp-phone a:hover { text-decoration: underline; }
+    .sb-note { font-size: 0.8rem; font-weight: 300; color: var(--grey-md); line-height: 1.8; }
+    .sb-note strong { color: var(--black); font-weight: 600; }
+    .sb-tat { border: 1px solid var(--black); padding: 1.1rem 1.2rem; font-size: 0.82rem; font-weight: 400; color: var(--black); line-height: 1.65; }
+    .sb-tat strong { color: var(--blood); font-weight: 700; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--black); padding: 2.5rem 0; }
+    footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+    .foot-brand { font-size: 0.85rem; font-weight: 600; color: var(--white); letter-spacing: -0.01em; }
+    .foot-brand span { display: block; font-size: 0.68rem; font-weight: 300; color: #3a3a3a; letter-spacing: 0.04em; margin-top: 0.2rem; }
+    .foot-right { text-align: right; }
+    .foot-right a { font-size: 0.78rem; color: #444; text-decoration: none; transition: color 0.2s; }
+    .foot-right a:hover { color: var(--blood); }
+    .foot-right p { font-size: 0.68rem; color: #2a2a2a; margin-top: 0.3rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1000px) {
+      .hero-main { grid-template-columns: 1fr; }
+      .hero-right { border-top: 1px solid #1f1f1f; padding: 3rem 4rem; }
+      .hero-bar { padding: 0 3rem; height: auto; flex-wrap: wrap; gap: 1rem; padding: 1.5rem 3rem; }
+      .hero-bar-item + .hero-bar-item { border-left: none; padding-left: 0; }
+      .about-layout { grid-template-columns: 1fr; }
+      .about-divider { display: none; }
+      .about-left { padding-right: 0; padding-bottom: 3rem; }
+      .about-right { padding-left: 0; padding-top: 3rem; border-top: 1px solid var(--rule); }
+      .includes-grid { grid-template-columns: 1fr 1fr; }
+      .inc:nth-child(3n) { border-right: 1px solid var(--rule); }
+      .inc:nth-child(even) { border-right: none; }
+      .rates-row { grid-template-columns: 1fr; }
+      .rate { border-right: none; border-bottom: 1px solid #1f1f1f; }
+      .rate:last-child { border-bottom: none; }
+      .process-grid { grid-template-columns: 1fr 1fr; }
+      .proc:nth-child(2) { border-right: none; }
+      .proc:nth-child(n+3) { border-top: 1px solid var(--rule); }
+      .proc:nth-child(3) { border-right: 1px solid var(--rule); }
+      .terms-grid { grid-template-columns: 1fr; }
+      .tc { border-right: none !important; border-bottom: 1px solid var(--rule) !important; }
+      .tc:last-child { border-bottom: none !important; }
+      .quote-layout { grid-template-columns: 1fr; }
+      .quote-form-col { padding-right: 0; border-right: none; border-bottom: 1px solid var(--rule); padding-bottom: 3rem; margin-bottom: 3rem; }
+      .quote-sidebar { padding-left: 0; flex-direction: row; flex-wrap: wrap; }
+      .sb-section { flex: 1; min-width: 220px; }
+      nav { padding: 0 1.5rem; }
+      .nav-links li:not(:last-child) { display: none; }
+    }
+    @media (max-width: 600px) {
+      nav { padding: 0 1rem; }
+      .hero-content { padding: 4rem 1.5rem 3rem; }
+      .hero-right { padding: 2.5rem 1.5rem; }
+      .hero-bar { padding: 1.5rem; }
+      .container { padding: 0 1.5rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .includes-grid { grid-template-columns: 1fr; }
+      .process-grid { grid-template-columns: 1fr; }
+      .proc { border-right: none !important; border-bottom: 1px solid var(--rule); }
+      .proc:last-child { border-bottom: none; }
+    }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-kicker  { animation: fadeUp 0.5s ease both 0.05s; }
+    .hero-heading { animation: fadeUp 0.5s ease both 0.12s; }
+    .hero-sub     { animation: fadeUp 0.5s ease both 0.22s; }
+    .hero-cta-row { animation: fadeUp 0.5s ease both 0.32s; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    <div class="nav-rule"></div>
+    <div class="nav-wordmark">
+      <strong>Livestock Solutions NZ</strong>
+      <span>Field Technician Services</span>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a onclick="goSection('about')">About</a></li>
+    <li><a onclick="goSection('pricing')">Pricing</a></li>
+    <li><a onclick="goSection('process')">Process</a></li>
+    <li><a class="nav-cta" onclick="showPage('quote')">Get a Quote</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ HOME ═══ -->
+<div id="page-home" class="page active">
+
+  <div class="hero">
+    <div class="hero-main">
+      <div class="hero-content">
+        <div>
+          <div class="hero-kicker"><div class="hero-kicker-line"></div><span>On-Farm Field Technician Services</span></div>
+          <h1 class="hero-heading">Livestock<br><span class="accent">Solutions</span><br>NZ</h1>
+          <p class="hero-sub">Professional on-farm blood sampling and field technician services.</p>
+          <div class="hero-cta-row">
+            <button class="btn-hero" onclick="showPage('quote')">Request a Quote</button>
+            <button class="hero-link" onclick="goSection('about')">How it works</button>
+          </div>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div style="margin-bottom:3rem">
+          <p class="region-label">Service Regions</p>
+          <ul class="region-list">
+            <li>Canterbury</li>
+            <li>West Coast</li>
+            <li>Southland</li>
+            <li>Marlborough</li>
+            <li class="muted">North Island — on request</li>
+          </ul>
+        </div>
+        <div>
+          <p class="hero-services-label">Indicative Rates (per head, ex-GST)</p>
+          <div class="hsvc"><span class="hsvc-name">Johne's (blood)</span><span class="hsvc-price">$14–$30 / head</span></div>
+          <div class="hsvc"><span class="hsvc-name">BVD (blood)</span><span class="hsvc-price">$14–$30 / head</span></div>
+          <div class="hsvc"><span class="hsvc-name">Combined testing</span><span class="hsvc-price">$28–$45 / head</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-bar">
+      <div class="hero-bar-item"><div class="hbi-label">Results Via</div><div class="hbi-val">Accredited Lab</div></div>
+      <div class="hero-bar-item"><div class="hbi-label">Turnaround</div><div class="hbi-val">5–7 Working Days</div></div>
+      <div class="hero-bar-item"><div class="hbi-label">Labour Rate</div><div class="hbi-val">$140 / hour</div></div>
+      <div class="hero-bar-item"><div class="hbi-label">Contact</div><div class="hbi-val">Steve · Megan · Tara</div></div>
+    </div>
+  </div>
+
+  <div class="section-white" id="about">
+    <div class="container">
+      <div class="about-layout">
+        <div class="about-left">
+          <p class="sec-label">Who We Are</p>
+          <h2 class="sec-title">Local. Independent.<br>Farmer-focused.</h2>
+          <p class="sec-body">Livestock Solutions is a specialist field technician team — lifelong agricultural professionals with deep expertise in animal handling. We work in partnership with the lab to deliver results that support your herd health and productivity.</p>
+          <div class="about-points">
+            <div class="about-point"><div class="ap-num">01</div><div class="ap-text"><h4>Specialist focus</h4><p>Johne's and BVD blood sampling is what we do. That depth of focus means accurate, efficient sample collection every time.</p></div></div>
+            <div class="about-point"><div class="ap-num">02</div><div class="ap-text"><h4>Competitive pricing</h4><p>Low overheads mean competitive rates. Every job is individually estimated so you only pay for what you need.</p></div></div>
+            <div class="about-point"><div class="ap-num">03</div><div class="ap-text"><h4>Results direct to you</h4><p>Lab results from the lab delivered directly to farmers — clear reporting on what was found and what to do next.</p></div></div>
+          </div>
+        </div>
+        <div class="about-divider"></div>
+        <div class="about-right">
+          <div class="about-why">
+            <h3>Why test for<br>Johne's &amp; BVD?</h3>
+            <p>Both diseases are endemic across much of New Zealand and cause significant economic losses — often before any visible signs appear. Early detection is the most cost-effective form of protection.</p>
+            <ul class="why-list">
+              <li>Johne's can shed in faeces for years before clinical signs emerge</li>
+              <li>A single BVD PI animal can infect and suppress immunity across your whole herd</li>
+              <li>Reproductive failures, poor growth rates, and culling costs accumulate quickly</li>
+              <li>Knowing your herd status enables confident, evidence-based management decisions</li>
+              <li>Testing supports biosecurity when buying or selling stock</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-near" id="pricing">
+    <div class="container">
+      <p class="sec-label">Indicative Pricing</p>
+      <h2 class="sec-title">Transparent costs.</h2>
+      <p class="sec-body" style="margin-bottom:2.5rem">All prices are indicative estimates based on historical job delivery, excluding GST. Your quote will reflect actual location, herd size, and requirements.</p>
+      <div class="pricing-notice"><strong>Indicative ranges only.</strong> Total cost per animal includes labour, travel, consumables, courier, and lab fees. <a onclick="showPage('quote')">Request an accurate job estimate →</a></div>
+      <table class="pt">
+        <thead><tr><th>Test Type</th><th>Under 30 Head</th><th>30–150 Head</th><th>150+ Head</th></tr></thead>
+        <tbody>
+          <tr><td>Johne's (blood)</td><td>$24–$30</td><td>$20–$28</td><td>$14–$24</td></tr>
+          <tr><td>BVD (blood)</td><td>$22–$30</td><td>$19–$28</td><td>$14–$23</td></tr>
+          <tr class="hl"><td>Johne's &amp; BVD Combined</td><td>$35–$45</td><td>$30–$40</td><td>$28–$38</td></tr>
+        </tbody>
+      </table>
+      <div class="includes-grid">
+        <div class="inc"><div class="inc-head">Labour</div><div class="inc-body">Site preparation, on-farm sampling &amp; processing</div></div>
+        <div class="inc"><div class="inc-head">Travel</div><div class="inc-body">Included in labour rate — portal to portal</div></div>
+        <div class="inc"><div class="inc-head">Consumables</div><div class="inc-body">Needles, tubes, labels &amp; all supplies</div></div>
+        <div class="inc"><div class="inc-head">Courier</div><div class="inc-body">Sample transport to the lab</div></div>
+        <div class="inc"><div class="inc-head">Lab Fees</div><div class="inc-body">All the lab testing costs included</div></div>
+        <div class="inc"><div class="inc-head">Results</div><div class="inc-body">Delivered directly to you from the lab</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-white" id="process">
+    <div class="container">
+      <p class="sec-label">How It Works</p>
+      <h2 class="sec-title">Four steps. No surprises.</h2>
+      <div class="process-grid">
+        <div class="proc"><div class="proc-n">01</div><h4>Request a Quote</h4><p>Tell us your farm location, herd size, and which tests you need. We prepare an accurate job estimate.</p></div>
+        <div class="proc"><div class="proc-n">02</div><h4>Confirm in Writing</h4><p>Jobs are confirmed by email or text before delivery. We agree a date that fits your programme.</p></div>
+        <div class="proc"><div class="proc-n">03</div><h4>On-Farm Sampling</h4><p>Our technicians arrive, work safely through your animals, and courier samples directly to the lab.</p></div>
+        <div class="proc"><div class="proc-n">04</div><h4>Results to You</h4><p>Within 5–7 working days you receive your results — clear reporting so you can act with confidence.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-near" id="terms">
+    <div class="container">
+      <p class="sec-label">Terms of Service</p>
+      <h2 class="sec-title">What to expect.</h2>
+      <p class="sec-body">Straightforward expectations that keep every job running safely and smoothly.</p>
+      <div class="terms-grid">
+        <div class="tc"><h3>Booking Confirmation</h3><p>Jobs must be confirmed in writing — email or text — prior to delivery.</p></div>
+        <div class="tc"><h3>Farmer Presence</h3><p>A farmer or designated representative must be on-site to assist with stock handling.</p></div>
+        <div class="tc"><h3>Health &amp; Safety</h3><p>Farmers are responsible for ensuring yards and facilities are safe. Unsafe conditions may result in cancellation.</p></div>
+        <div class="tc"><h3>Turnaround Time</h3><p>Typically 5–7 working days from lab receipt. Delays outside our control are not our responsibility.</p></div>
+        <div class="tc"><h3>Pricing &amp; Payment</h3><p>Estimates are indicative. Final invoices reflect actual hours, travel, consumables, courier, and lab fees. Payment due 20th of following month.</p></div>
+        <div class="tc"><h3>Liability</h3><p>While every care is taken, Livestock Solutions is not liable for indirect losses, lab errors, or unforeseen stock issues.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="foot-brand">Livestock Solutions Limited <span>Local · Independent · Farmer-Focused · livestocksolutionsnz.com</span></div>
+      <div class="foot-right"><a href="/cdn-cgi/l/email-protection#4824213e2d3b3c272b233b27243d3c2127263b2632082f25292124662b2725"><span class="__cf_email__" data-cfemail="f995908f9c8a8d969a928a96958c8d9096978a9783b99e94989095d79a9694">[email&#160;protected]</span></a><p>© 2025 Livestock Solutions Limited</p></div>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══ QUOTE ═══ -->
+<div id="page-quote" class="page">
+  <div class="quote-header">
+    <div class="container">
+      <p class="sec-label">Free &amp; No Obligation</p>
+      <h1>Request a Job Estimate</h1>
+      <p>A few details about your farm and we'll come back with an accurate, personalised quote — usually within 1 business day.</p>
+    </div>
+  </div>
+  <div class="container">
+    <div class="quote-layout">
+      <div class="quote-form-col">
+        <h2>Tell us about your farm</h2>
+        <p class="qsub">Fill in as much as you can. The more detail, the more accurate your estimate will be.</p>
+        <div id="qform">
+          <p class="fsec">Your Details</p>
+          <div class="form-row">
+            <div class="form-group"><label>Full Name *</label><input type="text" id="fn" placeholder="John Smith" /></div>
+            <div class="form-group"><label>Phone *</label><input type="tel" id="fp" placeholder="021 000 0000" /></div>
+          </div>
+          <div class="form-group"><label>Email Address *</label><input type="email" id="fe" placeholder="john@yourfarm.co.nz" /></div>
+          <p class="fsec">Farm Details</p>
+          <div class="form-group"><label>Farm Address / Location *</label><input type="text" id="fa" placeholder="e.g. 123 Valley Road, Methven, Canterbury" /></div>
+          <div class="form-row">
+            <div class="form-group"><label>Region</label><select id="fr"><option value="">Select region…</option><option>Canterbury</option><option>West Coast</option><option>Southland</option><option>Marlborough</option><option>North Island (on request)</option><option>Other</option></select></div>
+            <div class="form-group"><label>Species</label><select id="fs"><option value="">Select…</option><option>Cattle (Dairy)</option><option>Cattle (Beef)</option><option>Sheep</option><option>Deer</option><option>Goats</option><option>Mixed</option></select></div>
+          </div>
+          <div class="form-group"><label>Approximate Number of Animals *</label><input type="number" id="fq" placeholder="e.g. 80" min="1" /></div>
+          <p class="fsec">Tests Required</p>
+          <div class="cb-group">
+            <label class="cb-item"><input type="checkbox" /> Johne's Disease Testing (blood)</label>
+            <label class="cb-item"><input type="checkbox" /> BVD Testing (blood)</label>
+            <label class="cb-item"><input type="checkbox" /> Both Johne's &amp; BVD — combined visit</label>
+            <label class="cb-item"><input type="checkbox" /> Not sure — please advise</label>
+          </div>
+          <p class="fsec">Additional Notes</p>
+          <div class="form-group"><label>Questions or special requirements</label><textarea id="fx" placeholder="Yard access, preferred timing, previous test history, anything else useful…"></textarea></div>
+          <button class="btn-submit" onclick="submitQuote()">Send Quote Request</button>
+        </div>
+        <div class="form-success" id="qsuccess">
+          <h3>Quote request received.</h3>
+          <p>We'll be in touch within 1 business day with a personalised estimate for your farm.<br><br>In the meantime, feel free to call Steve, Megan, or Tara directly.</p>
+        </div>
+      </div>
+      <div class="quote-sidebar">
+        <div class="sb-section">
+          <h3>Contact Directly</h3>
+          <div class="contact-person"><div class="cp-name">Steve</div><div class="cp-phone"><a href="tel:+64212456718">021 245 6718</a></div></div>
+          <div class="contact-person"><div class="cp-name">Megan</div><div class="cp-phone"><a href="tel:+64273155003">027 315 5003</a></div></div>
+          <div class="contact-person"><div class="cp-name">Tara</div><div class="cp-phone"><a href="tel:+64276923289">027 692 3289</a></div></div>
+          <div class="contact-person"><div class="cp-name">Email</div><div class="cp-phone"><a href="/cdn-cgi/l/email-protection#3f5356495a4c4b505c544c50534a4b5650514c51457f58525e5653115c5052"><span class="__cf_email__" data-cfemail="472b2e3122343328242c34282b32332e282934293d07202a262e2b6924282a">[email&#160;protected]</span></a></div></div>
+        </div>
+        <div class="sb-section">
+          <h3>Pricing Guide</h3>
+          <div class="sb-note"><strong>Johne's or BVD:</strong> $14–$30/head<br><br><strong>Combined (both):</strong> $28–$45/head<br><br>Indicative ranges. All estimates include labour, travel, consumables, courier &amp; lab fees. Prices exclude GST.</div>
+        </div>
+        <div class="sb-tat"><strong>5–7 working days</strong> from lab receipt — results direct to you from the lab.</div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="container">
+      <div class="foot-brand">Livestock Solutions Limited <span>Local · Independent · Farmer-Focused</span></div>
+      <div class="foot-right"><a href="/cdn-cgi/l/email-protection#234f4a554650574c4048504c4f56574a4c4d504d5963444e424a4f0d404c4e"><span class="__cf_email__" data-cfemail="bad6d3ccdfc9ced5d9d1c9d5d6cfced3d5d4c9d4c0faddd7dbd3d694d9d5d7">[email&#160;protected]</span></a><p>© 2025 Livestock Solutions Limited</p></div>
+    </div>
+  </footer>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  function showPage(p) {
+    document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+    document.getElementById('page-' + p).classList.add('active');
+ 
