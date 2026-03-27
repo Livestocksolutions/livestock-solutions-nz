@@ -327,6 +327,57 @@
       .proc:last-child { border-bottom: none; }
     }
 
+    /* ── SERVICES GRID ── */
+    .services-grid { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--rule); }
+    .svc-card { padding: 2rem; border-right: 1px solid var(--rule); }
+    .svc-card:last-child { border-right: none; }
+    .svc-head { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blood); margin-bottom: 1rem; padding-bottom: 0.7rem; border-bottom: 1px solid var(--rule); }
+    .svc-list { list-style: none; }
+    .svc-list li { font-size: 0.88rem; font-weight: 400; color: var(--grey-dk); padding: 0.6rem 0; border-bottom: 1px solid var(--rule); line-height: 1.5; }
+    .svc-list li:first-child { padding-top: 0; }
+    .svc-list li:last-child { border-bottom: none; }
+    @media (max-width: 600px) { .services-grid { grid-template-columns: 1fr; } .svc-card { border-right: none; border-bottom: 1px solid var(--rule); } .svc-card:last-child { border-bottom: none; } }
+
+    /* ── RATES GRID ── */
+    .rates-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--black); margin-bottom: 3rem; }
+    .rg-item { padding: 2rem; border-right: 1px solid var(--black); background: var(--near-white); }
+    .rg-item:last-child { border-right: none; }
+    .rg-label { font-size: 0.63rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blood); margin-bottom: 0.8rem; }
+    .rg-val { font-size: 2rem; font-weight: 800; color: var(--black); letter-spacing: -0.04em; line-height: 1; margin-bottom: 0.6rem; }
+    .rg-val span { font-size: 1rem; font-weight: 400; color: var(--grey-md); }
+    .rg-desc { font-size: 0.8rem; font-weight: 300; color: var(--grey-md); line-height: 1.65; }
+    @media (max-width: 1000px) { .rates-grid { grid-template-columns: 1fr; } .rg-item { border-right: none; border-bottom: 1px solid var(--black); } .rg-item:last-child { border-bottom: none; } }
+
+    /* ── CONTACT PAGE ── */
+    #page-contact { padding-top: 60px; background: var(--white); min-height: 100vh; }
+    .contact-page-header { background: var(--black); padding: 5rem 0 4rem; border-bottom: 2px solid var(--blood); }
+    .contact-page-header .sec-label { color: #444; }
+    .contact-page-header h1 { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 800; color: var(--white); line-height: 1.05; letter-spacing: -0.04em; margin-bottom: 0.8rem; }
+    .contact-page-header p { font-size: 0.9rem; font-weight: 300; color: #666; line-height: 1.85; max-width: 460px; }
+    .contact-page-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 5rem 0; }
+    .contact-page-left { padding-right: 5rem; border-right: 1px solid var(--rule); }
+    .contact-page-right { padding-left: 5rem; }
+    .cp-block-label { font-size: 0.63rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--blood); margin-bottom: 1rem; }
+    .cp-team-row { display: flex; align-items: baseline; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid var(--rule); }
+    .cp-team-row:first-child { border-top: 1px solid var(--rule); }
+    .cp-team-name { font-size: 0.95rem; font-weight: 600; color: var(--black); letter-spacing: -0.01em; }
+    .cp-team-phone a { font-size: 0.9rem; font-weight: 500; color: var(--blood); text-decoration: none; }
+    .cp-team-phone a:hover { text-decoration: underline; }
+    .cp-email-link { font-size: 1rem; font-weight: 500; color: var(--blood); text-decoration: none; display: block; margin-top: 0.5rem; }
+    .cp-email-link:hover { text-decoration: underline; }
+    .cp-regions-list { margin-top: 0.5rem; list-style: none; }
+    .cp-regions-list li { font-size: 0.9rem; font-weight: 400; color: var(--grey-dk); padding: 0.6rem 0; border-bottom: 1px solid var(--rule); }
+    .cp-regions-list li:first-child { border-top: 1px solid var(--rule); }
+    .cp-regions-list li.muted { color: var(--grey-lt); font-size: 0.83rem; font-style: italic; }
+    .cp-cta-box { background: var(--black); padding: 2rem; margin-top: 2.5rem; }
+    .cp-cta-box h3 { font-size: 1.1rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+    .cp-cta-box p { font-size: 0.83rem; font-weight: 300; color: #555; line-height: 1.75; margin-bottom: 1.5rem; }
+    @media (max-width: 1000px) {
+      .contact-page-layout { grid-template-columns: 1fr; }
+      .contact-page-left { padding-right: 0; border-right: none; border-bottom: 1px solid var(--rule); padding-bottom: 3rem; margin-bottom: 3rem; }
+      .contact-page-right { padding-left: 0; }
+    }
+
     @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
     .hero-kicker  { animation: fadeUp 0.5s ease both 0.05s; }
     .hero-heading { animation: fadeUp 0.5s ease both 0.12s; }
@@ -348,6 +399,7 @@
     <li><a onclick="goSection('about')">About</a></li>
     <li><a onclick="goSection('pricing')">Pricing</a></li>
     <li><a onclick="goSection('process')">Process</a></li>
+    <li><a onclick="showPage('contact')">Contact</a></li>
     <li><a class="nav-cta" onclick="showPage('quote')">Get a Quote</a></li>
   </ul>
 </nav>
@@ -380,10 +432,13 @@
           </ul>
         </div>
         <div>
-          <p class="hero-services-label">Indicative Rates (per head, ex-GST)</p>
-          <div class="hsvc"><span class="hsvc-name">Johne's (blood)</span><span class="hsvc-price">$14–$30 / head</span></div>
-          <div class="hsvc"><span class="hsvc-name">BVD (blood)</span><span class="hsvc-price">$14–$30 / head</span></div>
-          <div class="hsvc"><span class="hsvc-name">Combined testing</span><span class="hsvc-price">$28–$45 / head</span></div>
+          <p class="hero-services-label">Services</p>
+          <div class="hsvc"><span class="hsvc-name">Johne's Disease Testing (blood)</span></div>
+          <div class="hsvc"><span class="hsvc-name">BVD Testing (blood)</span></div>
+          <div class="hsvc"><span class="hsvc-name">Combined Johne's &amp; BVD</span></div>
+          <div class="hsvc"><span class="hsvc-name">Other Blood Tests on Request</span></div>
+          <div class="hsvc"><span class="hsvc-name">Body Condition Scoring</span></div>
+          <div class="hsvc"><span class="hsvc-name">Water Testing</span></div>
         </div>
       </div>
     </div>
@@ -428,9 +483,35 @@
 
   <div class="section-near" id="pricing">
     <div class="container">
-      <p class="sec-label">Indicative Pricing</p>
-      <h2 class="sec-title">Transparent costs.</h2>
-      <p class="sec-body" style="margin-bottom:2.5rem">All prices are indicative estimates based on historical job delivery, excluding GST. Your quote will reflect actual location, herd size, and requirements.</p>
+
+      <!-- SERVICES -->
+      <p class="sec-label">What We Do</p>
+      <h2 class="sec-title">Our Services</h2>
+      <p class="sec-body" style="margin-bottom:2.5rem">On-farm field technician services across Canterbury, West Coast, Southland, and Marlborough.</p>
+
+      <div class="services-grid" style="margin-bottom:3rem">
+        <div class="svc-card">
+          <div class="svc-head">Blood Testing</div>
+          <ul class="svc-list">
+            <li>Johne's Disease (blood)</li>
+            <li>BVD (blood)</li>
+            <li>Johne's &amp; BVD Combined</li>
+            <li>Other blood tests on request</li>
+          </ul>
+        </div>
+        <div class="svc-card">
+          <div class="svc-head">Additional Services</div>
+          <ul class="svc-list">
+            <li>Body Condition Scoring</li>
+            <li>Water Testing</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- TRANSPARENT COSTS -->
+      <p class="sec-label" style="margin-top:1rem">Transparent Costs</p>
+      <h2 class="sec-title">Indicative Testing Rates</h2>
+      <p class="sec-body" style="margin-bottom:2rem">All prices are indicative estimates based on historical job delivery, excluding GST. Your quote will reflect actual location, herd size, and requirements.</p>
       <div class="pricing-notice"><strong>Indicative ranges only.</strong> Total cost per animal includes labour, travel, consumables, courier, and lab fees. <a onclick="showPage('quote')">Request an accurate job estimate →</a></div>
       <table class="pt">
         <thead><tr><th>Test Type</th><th>Under 30 Head</th><th>30–150 Head</th><th>150+ Head</th></tr></thead>
@@ -440,13 +521,66 @@
           <tr class="hl"><td>Johne's &amp; BVD Combined</td><td>$35–$45</td><td>$30–$40</td><td>$28–$38</td></tr>
         </tbody>
       </table>
-      <div class="includes-grid">
+      <div class="includes-grid" style="margin-bottom:3rem">
         <div class="inc"><div class="inc-head">Labour</div><div class="inc-body">Site preparation, on-farm sampling &amp; processing</div></div>
         <div class="inc"><div class="inc-head">Travel</div><div class="inc-body">Included in labour rate — portal to portal</div></div>
         <div class="inc"><div class="inc-head">Consumables</div><div class="inc-body">Needles, tubes, labels &amp; all supplies</div></div>
         <div class="inc"><div class="inc-head">Courier</div><div class="inc-body">Sample transport to the lab</div></div>
-        <div class="inc"><div class="inc-head">Lab Fees</div><div class="inc-body">All the lab testing costs included</div></div>
+        <div class="inc"><div class="inc-head">Lab Fees</div><div class="inc-body">All lab testing costs included</div></div>
         <div class="inc"><div class="inc-head">Results</div><div class="inc-body">Delivered directly to you from the lab</div></div>
+      </div>
+
+      <!-- FIELD TECH RATES -->
+      <p class="sec-label">General Field Technician Rates</p>
+      <h2 class="sec-title">How we charge.</h2>
+      <p class="sec-body" style="margin-bottom:2rem">For services outside of packaged blood testing, the following rates apply.</p>
+      <div class="rates-grid">
+        <div class="rg-item">
+          <div class="rg-label">Site Preparation &amp; On-Farm Work</div>
+          <div class="rg-val">$140<span>/hr</span></div>
+          <div class="rg-desc">Includes all time on-site — set up, sampling, and pack down</div>
+        </div>
+        <div class="rg-item">
+          <div class="rg-label">Travel Time</div>
+          <div class="rg-val">$140<span>/hr</span></div>
+          <div class="rg-desc">Charged portal to portal at the same hourly rate</div>
+        </div>
+        <div class="rg-item">
+          <div class="rg-label">Vehicle &amp; Mileage</div>
+          <div class="rg-val">$1.25<span>/km</span></div>
+          <div class="rg-desc">Charged at cost for distance travelled to and from your property</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="section-white" id="contact">
+    <div class="container">
+      <p class="sec-label">Get in Touch</p>
+      <h2 class="sec-title">Contact us.</h2>
+      <p class="sec-body" style="margin-bottom:3rem">Ready to book a job or have a question? Reach out to any of the team directly.</p>
+      <div class="contact-grid">
+        <div class="contact-block">
+          <div class="contact-label">Phone</div>
+          <div class="contact-people">
+            <div class="contact-person-row"><span class="cpn">Steve</span><a href="tel:+64212456718">021 245 6718</a></div>
+            <div class="contact-person-row"><span class="cpn">Megan</span><a href="tel:+64273155003">027 315 5003</a></div>
+            <div class="contact-person-row"><span class="cpn">Tara</span><a href="tel:+64276923289">027 692 3289</a></div>
+          </div>
+        </div>
+        <div class="contact-block">
+          <div class="contact-label">Email</div>
+          <a class="contact-email" href="/cdn-cgi/l/email-protection#88e4e1feedfbfce7ebe3fbe7e4fdfce1e7e6fbe6f2c8efe5e9e1e4a6ebe7e5"><span class="__cf_email__" data-cfemail="f79b9e8192848398949c84989b82839e989984998db7909a969e9bd994989a">[email&#160;protected]</span></a>
+        </div>
+        <div class="contact-block">
+          <div class="contact-label">Service Regions</div>
+          <div class="contact-regions">Canterbury · West Coast · Southland · Marlborough<br><span style="color:var(--grey-lt);font-size:0.82rem">North Island available on request</span></div>
+        </div>
+        <div class="contact-cta">
+          <button class="btn-hero" onclick="showPage('quote')" style="width:100%;text-align:center">Request a Quote →</button>
+        </div>
       </div>
     </div>
   </div>
@@ -556,8 +690,78 @@
   </footer>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  function showPage(p) {
-    document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
-    document.getElementById('page-' + p).classList.add('active');
- 
+
+<!-- ═══ CONTACT ═══ -->
+<div id="page-contact" class="page">
+  <div class="contact-page-header">
+    <div class="container">
+      <p class="sec-label">Get in Touch</p>
+      <h1>Contact Us</h1>
+      <p>Reach out to any of the team directly — we're happy to answer questions, discuss your requirements, or get a job booked in.</p>
+    </div>
+  </div>
+  <div class="container">
+    <div class="contact-page-layout">
+      <div class="contact-page-left">
+        <p class="cp-block-label" style="margin-bottom:1.5rem">Team</p>
+        <div class="cp-team-row">
+          <span class="cp-team-name">Steve</span>
+          <span class="cp-team-phone"><a href="tel:+64212456718">021 245 6718</a></span>
+        </div>
+        <div class="cp-team-row">
+          <span class="cp-team-name">Megan</span>
+          <span class="cp-team-phone"><a href="tel:+64273155003">027 315 5003</a></span>
+        </div>
+        <div class="cp-team-row">
+          <span class="cp-team-name">Tara</span>
+          <span class="cp-team-phone"><a href="tel:+64276923289">027 692 3289</a></span>
+        </div>
+
+        <p class="cp-block-label" style="margin-top:3rem">Email</p>
+        <a class="cp-email-link" href="mailto:info@livestocksolutionsnz.com">info@livestocksolutionsnz.com</a>
+
+        <div class="cp-cta-box">
+          <h3>Need a quote?</h3>
+          <p>Fill in a few details about your farm and we'll come back with an accurate, personalised estimate — usually within 1 business day.</p>
+          <button class="btn-hero" onclick="showPage('quote')" style="width:100%;text-align:center">Request a Quote →</button>
+        </div>
+      </div>
+
+      <div class="contact-page-right">
+        <p class="cp-block-label">Service Regions</p>
+        <ul class="cp-regions-list">
+          <li>Canterbury</li>
+          <li>West Coast</li>
+          <li>Southland</li>
+          <li>Marlborough</li>
+          <li class="muted">North Island — available on request</li>
+        </ul>
+
+        <p class="cp-block-label" style="margin-top:3rem">Our Services</p>
+        <ul class="cp-regions-list">
+          <li>Johne's Disease Testing (blood)</li>
+          <li>BVD Testing (blood)</li>
+          <li>Johne's &amp; BVD Combined</li>
+          <li>Other Blood Tests on Request</li>
+          <li>Body Condition Scoring</li>
+          <li>Water Testing</li>
+        </ul>
+
+        <p class="cp-block-label" style="margin-top:3rem">Field Technician Rates</p>
+        <ul class="cp-regions-list">
+          <li>Labour (Site, Prep &amp; Travel) — <strong>$140 / hour</strong></li>
+          <li>Vehicle &amp; Mileage — <strong>$1.25 / km</strong></li>
+          <li class="muted">All rates exclude GST</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="container">
+      <div class="foot-brand">Livestock Solutions Limited <span>Local · Independent · Farmer-Focused · livestocksolutionsnz.com</span></div>
+      <div class="foot-right"><a href="mailto:info@livestocksolutionsnz.com">info@livestocksolutionsnz.com</a><p>© 2025 Livestock Solutions Limited</p></div>
+    </div>
+  </footer>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false
